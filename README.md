@@ -116,10 +116,13 @@ Lembre-se do usuário configurado e sua senha. Em seguida o seu kernel estará e
 
 Para facilitar a compilação do kernel, criamos um script Makefile para executar o buildroot com as configurações citadas antariormente, presente no arquivo .config abaixo. Esse arquivo Make deverá estar no mesmo diretório do buildroot, enquanto o .config deverá estar na raíz do buildroot. Vale mencionar que o .config é a configuração efetuada na etapa 2, sem essas configuração não é possível criar o file system. Geramos esse arquivo para agilizar as etapas.
 
-Já no arquivo Make, você precisa alterar o caminho do user da maquina e da partição gerada no SDCard, para que seja reconhecido na hora de executar o comando. Como no exemplo abaixo:
+Já no arquivo Make, você precisa alterar o caminho do user da maquina e das partições do SDCard, para que seja reconhecido na hora de executar o comando. Como nos exemplos abaixo:
 
 ```
-media/[seu_user]/[sua_partiao]
+USER = [seu_ususario]
+PARTITION_ROOTFS = /media/usuario/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+PARTITION_ZIMAGE = XXXX-XXXX 
+HOME_PATH = /[o_caminho]/[para]/[o_diretorio]/[do_build_root]
 ```
 
 O arquivo Makefile encapsula as seguintes funcionalidades:
@@ -132,10 +135,6 @@ O arquivo Makefile encapsula as seguintes funcionalidades:
 
 
 ### Executando o Makefile
-
-```
-Makefile
-```
 
 Execute os seguintes comandos:
 
@@ -153,15 +152,20 @@ make install
 make build
 ```
 
-3. O make deploy, envia o Kernel e o root file system para o SDCard. Dependências:
+3. O make remove é necessário para remoção do arquivo root file system, devido ao erro que pode ocorrer após execução mesmo que feita correta. É importante checar os arquivos internos do SDCard, como confirmação de que o comando foi efetivo.
+
+```
+make remove
+```
+
+
+4. O make deploy, envia o Kernel e o root file system para o SDCard. Dependências:
 
 - Necessário a conexão com o Pen-drive(SDCard).
 
 ```
 make deploy
 ```
-
-
 
 ### Referências
 
