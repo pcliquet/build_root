@@ -1,6 +1,6 @@
 ## Tutorial Buildroot utilizando ferramentas atuais
 
-Neste tutorial irémos explicar como efetuar o build root utilizando os seguintes recursos:
+Neste tutorial iremos explicar como efetuar o build root utilizando os seguintes recursos:
 
 - Ubuntu 24.04 e 24.04.1
 - [Arm GNU 13.3.rel1-x86_64-arm-none-linux-gnueabihf](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
@@ -28,7 +28,9 @@ Primeiramente, baixe os recursos citados acima (exceto Linux SoCFPGA, cujo link 
 1. Acesse o diretorio do Buildroot
 2. rode o comando: 
 ```
-make ARCH=arm ARM_GCC=[insert_toolchain_path]/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-linux-gnueabihf menuconfig
+export ARM_GCC=[insert_toolchain_path]/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-linux-gnueabihf
+export ARCH=arm
+make menuconfig
 ```
 
 
@@ -79,7 +81,8 @@ Apos efetuar e salvar as configurações do buildroot, o comando abaixo ira gera
 
 ```
 export ARM_GCC=[insert_toolchain_path]/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-linux-gnueabihf
-make ARCH=arm all -j 8
+export ARCH=arm
+make all -j 8
 ```
 
 - Na área do insert_toolchain_path coloque o caminho do diretório onde deixou a pasta [Arm GNU 13.3.rel1-x86_64-arm-none-linux-gnueabihf](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads) após extração.
@@ -100,7 +103,9 @@ sync
 ### 5. Passando a imagem do kernel para o SDCard
 
 Copie o arquivo zImage para a partição do pendrive de 500 MB, substituindo o zImage antigo.
-
+```
+cp -f zImage /media/[seu_usuario]/[partição_do_sdcard_zimage]/zImage
+```
 
 ### 6. Executando
 
@@ -114,9 +119,9 @@ Lembre-se do usuário configurado e sua senha. Em seguida o seu kernel estará e
 
 ### Facilitando
 
-Para facilitar a compilação do kernel, criamos um script Makefile para executar o buildroot com as configurações citadas antariormente, presente no arquivo .config abaixo. Esse arquivo Make deverá estar no mesmo diretório do buildroot, enquanto o .config deverá estar na raíz do buildroot. Vale mencionar que o .config é a configuração efetuada na etapa 2, sem essas configuração não é possível criar o file system. Geramos esse arquivo para agilizar as etapas.
+Para facilitar a compilação do kernel, criamos um script Makefile para executar o buildroot com as configurações citadas antariormente, presente no arquivo .config abaixo. Esse arquivo Make deverá estar no mesmo diretório do buildroot, enquanto o .config deverá estar na raíz do buildroot. Vale mencionar que o .config é a configuração efetuada na etapa 2, sem essa configuração não é possível criar o file system. Geramos esse arquivo para agilizar as etapas.
 
-Já no arquivo Make, você precisa alterar o caminho do user da maquina e das partições do SDCard, para que seja reconhecido na hora de executar o comando. Como nos exemplos abaixo:
+Já no arquivo Makefile, você precisa alterar o caminho do user da máquina e das partições do SDCard, para que seja reconhecido na hora de executar o comando. Como nos exemplos abaixo:
 
 ```
 USER = [seu_ususario]
@@ -131,14 +136,19 @@ O arquivo Makefile encapsula as seguintes funcionalidades:
 
 - Compila o kernel e o root file system
 
-- Transferencia o file system e o kernel pro SDCard(JÁ CONECTADO COM O PEN-DRIVE EM SUA MÁQUINA, SE FOR RODAR APENAS O make)
+- Apaga o file system atual do SDCard (JÁ CONECTADO COM O PEN-DRIVE EM SUA MÁQUINA)
+
+- Transfere o file system e o kernel pro SDCard(JÁ CONECTADO COM O PEN-DRIVE EM SUA MÁQUINA)
 
 
 ### Executando o Makefile
 
+> [!WARNING] 
+> Não rode o comando ```make``` por si só. Pode dar problema.
+
 Execute os seguintes comandos:
 
-1. O make install irá baixar todas as dependências e copia o .config para dentro do buildroot. Dependências:
+1. O make install irá baixar todas as dependências e copiar o .config para dentro do buildroot. Dependências:
 
 - Necessário que o .config esteja na mesma pasta do Makefile.
 
@@ -151,6 +161,9 @@ make install
 ```
 make build
 ```
+> [!WARNING] 
+> Se aparecer o erro "LD_LIBRARY_PATH" execute o comando:
+unset LD_LIBRARY_PATH e rode o make build novamente.
 
 3. O make remove é necessário para remoção do arquivo root file system, devido ao erro que pode ocorrer após execução mesmo que feita correta. É importante checar os arquivos internos do SDCard, como confirmação de que o comando foi efetivo.
 
