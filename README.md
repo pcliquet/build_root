@@ -2,7 +2,7 @@
 
 Neste tutorial iremos explicar como efetuar o build root utilizando os seguintes recursos:
 
-- Ubuntu 24.04 e 24.04.1
+- Testado em: Ubuntu 20.04, 22.04, 24.04 e 24.04.1. 
 - [Arm GNU 13.3.rel1-x86_64-arm-none-linux-gnueabihf](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 - [Buildroot 2024.08.1.tar.xz](https://buildroot.org/downloads/)
 
@@ -10,6 +10,14 @@ Neste tutorial iremos explicar como efetuar o build root utilizando os seguintes
 A utilização das ferramentas atuais permite entender e facilitar a contrução dos arquivos de sistemas de forma atualizada.
 
 ### 1. Inicializando
+
+Para efetuar esse tutorial, é preciso ter o SDCard particionado com a imagem desse arquivo [Linux Console(Kernel 4.5)](https://download.terasic.com/downloads/cd-rom/de10-standard/Linux/DE10-Standard_Linux_Console.zip)
+
+```
+wget https://download.terasic.com/downloads/cd-rom/de10-standard/Linux/DE10-Standard_Linux_Console.zip
+```
+
+Depois descompactar o .zip e passe para o SDCard particionado.
 
 Instale os packages necessários:
 ```
@@ -124,11 +132,16 @@ Para facilitar a compilação do kernel, criamos um script Makefile para executa
 Já no arquivo Makefile, você precisa alterar o caminho do user da máquina e das partições do SDCard, para que seja reconhecido na hora de executar o comando. Como nos exemplos abaixo:
 
 ```
-USER = [seu_ususario]
-PARTITION_ROOTFS = XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-PARTITION_ZIMAGE = XXXX-XXXX 
-HOME_PATH = /home/$(USER)/[o_caminho]/[para]/[o_diretorio]/[do_build_root]
+export USER = [seu_ususario]
+export PARTITION_ROOTFS = XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+export PARTITION_ZIMAGE = XXXX-XXXX 
+export HOME_PATH = /[o_caminho]/[para]/[o_diretorio]/[do_build_root]/
 ```
+
+
+> [!WARNING] 
+> HOME_PATH precisa terminar com "/" e verifique e retire caso haja espaços após os nomes dos partitions, pois pode gerar erros no make.
+
 
 O arquivo Makefile encapsula as seguintes funcionalidades:
 
