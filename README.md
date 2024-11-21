@@ -120,9 +120,9 @@ Já no arquivo Make, você precisa alterar o caminho do user da maquina e das pa
 
 ```
 USER = [seu_ususario]
-PARTITION_ROOTFS = /media/usuario/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+PARTITION_ROOTFS = XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 PARTITION_ZIMAGE = XXXX-XXXX 
-HOME_PATH = /[o_caminho]/[para]/[o_diretorio]/[do_build_root]
+HOME_PATH = /home/$(USER)/[o_caminho]/[para]/[o_diretorio]/[do_build_root]
 ```
 
 O arquivo Makefile encapsula as seguintes funcionalidades:

@@ -1,7 +1,7 @@
-USER = arqcomp
-PARTITION_ROOTFS =
-PARTITION_ZIMAGE = 
-HOME_PATH = /home/$(USER)/work/projeto_atualizado/
+USER = [seu_ususario]
+PARTITION_ROOTFS = XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+PARTITION_ZIMAGE = XXXX-XXXX 
+HOME_PATH = /home/$(USER)/[o_caminho]/[para]/[o_diretorio]/[do_build_root]
 BUILDROOTPATH = buildroot-2024.08.1
 ARM_GCC=arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-linux-gnueabihf
 ARCH=arm
